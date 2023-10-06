@@ -1,0 +1,304 @@
+\documentclass[12pt, twoside, letterpaper, french]{article}
+
+\usepackage[T1]{fontenc}
+\RequirePackage[french]{babel}
+\bibliographystyle{plain-fr}
+
+%\newcommand{\reporttitle}{Analyse du comportement et amélioration de la \\convergence des réseaux de neurones morphologiques}
+\newcommand{\reportauthor}{Antoine BOTTENMULLER}
+\newcommand{\tuteurEMSE}{Yann GAVET}
+\newcommand{\encadrantUn}{Guillaume TOCHON (LRE)}
+\newcommand{\encadrantDeux}{Jesús ANGULO (CMM)}
+\newcommand{\reporttype}{Coursework}
+
+% Include files that load packages and define macros
+\input{includes} % various packages needed for maths etc.
+\input{notation} % short-hand notation and macros
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Front page
+\input{titlepage}
+\addtocounter{page}{-1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Empty page
+\null
+\thispagestyle{empty}
+\addtocounter{page}{-1}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Preface (1 page max)
+\thispagestyle{empty}
+\section*{Préface}
+\vspace{0.4cm}
+\input{preface}
+\addtocounter{page}{-1}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Table of content
+\thispagestyle{empty}
+\tableofcontents
+\addtocounter{page}{-2}
+\thispagestyle{empty}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Main document
+
+%========================================================================================
+%	1. INTRODUCTION
+%========================================================================================
+
+\section{Introduction}
+\vspace{0.2cm}
+\input{parts/1-introduction}
+\newpage
+
+%========================================================================================
+%	2. ETAT DE L'ART
+%========================================================================================
+
+\section{État de l'art}
+
+% Morphologie mathematique
+\subsection{Morphologie mathématique} %Opérateurs classiques de la morphologie mathématique
+
+\subsubsection{Morphologie binaire}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/A-operateurs_morphologiques_classiques/a-morphologie_binaire}
+\newpage
+
+\subsubsection{Morphologie en niveaux de gris}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/A-operateurs_morphologiques_classiques/b-morphologie_en_niveaux_de_gris}
+\newpage
+
+% Structure des reseaux
+\subsection{Structure des réseaux morphologiques} %Construction et structure des réseaux morphologiques
+
+\subsubsection{Construction d'une couche morphologique}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/B-structure_des_reseaux_morphologiques/structure_des_couches_morphologiques}
+\newpage
+
+\subsubsection{Architecture d'un réseau morphologique}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/B-structure_des_reseaux_morphologiques/structure_des_reseaux_neuronaux}
+\newpage
+
+% Couches morphologiques existantes
+\subsection{Les différentes couches morphologiques} %Couches morphologiques existant
+
+\subsubsection{Couche \textit{p}-convolution}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/C-reseaux_morphologiques_existant/a-reseaux_pConv}
+\newpage
+
+\subsubsection{Couche $\mathcal{L}$Morph}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/C-reseaux_morphologiques_existant/b-reseaux_LMorph}
+\newpage
+
+\subsubsection{Couche $\mathcal{S}$Morph}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/C-reseaux_morphologiques_existant/c-reseaux_SMorph}
+\newpage
+
+% Efficacité des reseaux
+\subsection{Efficacité des réseaux morphologiques} %Efficacité des réseaux morphologiques
+
+\subsubsection{Méthodologie et description des expériences}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/D-efficacite_des_reseaux_existant/a-description_des_experiences}
+\newpage
+
+\subsubsection{Comparaison de la précision des réseaux}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/D-efficacite_des_reseaux_existant/b-comparaison_efficacite_des_reseaux}
+\newpage
+
+\subsubsection{Problèmes de convergence des réseaux}
+\vspace{0.2cm}
+\input{parts/2-etat_de_lart/D-efficacite_des_reseaux_existant/c-problemes_de_convergence}
+\newpage
+
+%========================================================================================
+%	3. AMELIORATION DES RESEAUX
+%========================================================================================
+
+\section{Amélioration des réseaux}
+
+% Réseaux SMorphNet-Tanh
+\subsection{Réseau $\mathcal{S}$MorphNet-Tanh} %Réseaux SMorphNet-Tanh
+
+\subsubsection{Contexte et motivations}
+\vspace{0.2cm}
+\input{parts/3-contributions/A-reseaux_smorphTANH/a-motivations}
+\newpage
+
+\subsubsection{Formalisation}
+\vspace{0.2cm}
+\input{parts/3-contributions/A-reseaux_smorphTANH/b-formalisation}
+\newpage
+
+\subsubsection{Comparaison avec $\mathcal{S}$MorphNet}
+\vspace{0.2cm}
+\input{parts/3-contributions/A-reseaux_smorphTANH/c-resultats_et_comparaisons}
+\newpage
+
+% Partage de poids
+\subsection{Partage de poids} %Partage de poids
+
+\subsubsection{Contexte et motivations}
+\vspace{0.2cm}
+\input{parts/3-contributions/B-partage_de_poids/a-motivations}
+\newpage
+
+\subsubsection{Partage de poids dur}
+\vspace{0.2cm}
+\input{parts/3-contributions/B-partage_de_poids/b-partage_dur}
+\newpage
+
+\subsubsection{Partage de poids doux}
+\vspace{0.2cm}
+\input{parts/3-contributions/B-partage_de_poids/c-partage_doux}
+%\newpage
+
+\subsubsection{Comparaison de l'efficacité}
+\vspace{0.2cm}
+\input{parts/3-contributions/B-partage_de_poids/d-resultats_et_comparaison_SANSvsDURvsDOUX}
+\newpage
+
+% Partage de poids
+\subsection{Contraintes sur les poids} %Partage de poids
+
+\subsubsection{Contexte et motivations}
+\vspace{0.2cm}
+\input{parts/3-contributions/C-contraintes_geometriques/a-motivations}
+%\newpage
+
+\subsubsection{Contraintes géométriques sur les noyaux $w$}
+\vspace{0.2cm}
+\input{parts/3-contributions/C-contraintes_geometriques/b-contraintes_sur_les_noyaux}
+%\newpage
+
+\subsubsection{Contraintes sur les paramètres de contrôle $\alpha$}
+\vspace{0.2cm}
+\input{parts/3-contributions/C-contraintes_geometriques/c-contraintes_sur_les_alpha}
+\newpage
+
+\subsubsection{Application et comparaison de l'efficacité}
+\vspace{0.2cm}
+\input{parts/3-contributions/C-contraintes_geometriques/d-application_et_comparaison}
+\newpage
+
+% Initialisation gaussienne
+\subsection{Modulation de l'initialisation} %Partage de poids
+
+\subsubsection{Motivations et principe}
+\vspace{0.2cm}
+\input{parts/3-contributions/D-modulation_de_l_initialisation/a-motivations}
+\newpage
+
+\subsubsection{Comparaison de l'efficacité}
+\vspace{0.2cm}
+\input{parts/3-contributions/D-modulation_de_l_initialisation/b-resultats_et_comparaison}
+\newpage
+
+%========================================================================================
+%	4. ANALYSE GLOBALE DES RESEAUX
+%========================================================================================
+
+\section{Analyse des réseaux}
+
+% 2 couches pour 1 opération morphologique primaire
+\subsection{Réseaux à deux couches pour une opération primaire}
+
+\subsubsection{Motivations}
+\vspace{0.2cm}
+\input{parts/4-analyse_des_reseaux/deux_couches_pour_OPfondamentale/motivations}
+\newpage
+
+\subsubsection{Avec l'érosion}
+\vspace{0.2cm}
+\input{parts/4-analyse_des_reseaux/deux_couches_pour_OPfondamentale/erosion}
+%\newpage
+
+\subsubsection{Avec la dilatation}
+\vspace{0.46cm}
+\input{parts/4-analyse_des_reseaux/deux_couches_pour_OPfondamentale/dilation}
+%\newpage
+
+\subsubsection{Discussion}
+\vspace{0.32cm}
+\input{parts/4-analyse_des_reseaux/deux_couches_pour_OPfondamentale/discussion}
+\newpage
+
+% Impact de la banque d'images d'entraînement
+\subsection{Impact du jeu de données d'entraînement}
+
+\subsubsection{Description des banques MNIST et FashionMNIST}
+\vspace{0.2cm}
+\input{parts/4-analyse_des_reseaux/impact_database/mnist_fashionmnist}
+\newpage
+
+\subsubsection{Différences de résultats entre les jeux}
+\vspace{0.2cm}
+\input{parts/4-analyse_des_reseaux/impact_database/diff_of_results_mnist_vs_fashionmnist}
+%\newpage
+
+\subsubsection{Résultats avec les jeux en négatif}
+\vspace{0.3cm}
+\input{parts/4-analyse_des_reseaux/impact_database/negative_images}
+\newpage
+
+% Relation entre complexité de la structure cible et échecs de convergence
+\subsection{Relation entre complexité et échec de convergence}
+
+\subsubsection{Complexité de la forme de la fonction structurante cible}
+\vspace{0.2cm}
+\input{parts/4-analyse_des_reseaux/complexity_and_fails/kernels_shape_complexity}
+%\newpage
+
+\subsubsection{Complexité de la configuration du réseau}
+\vspace{0.3cm}
+\input{parts/4-analyse_des_reseaux/complexity_and_fails/number_of_layers}
+\newpage
+
+% Autres...
+\subsection{Autres rapides analyses}
+
+\subsubsection{Importance des $\alpha$ dans la convergence des réseaux}
+\vspace{0.2cm}
+\input{parts/4-analyse_des_reseaux/others/impact_des_alphas}
+%\newpage
+
+\subsubsection{Application au débruitage}
+\vspace{0.3cm}
+\input{parts/4-analyse_des_reseaux/others/dessalage}
+\newpage
+
+%========================================================================================
+%	5. CONCLUSION
+%========================================================================================
+
+\section{Conclusion}
+\vspace{0.2cm}
+\input{parts/5-conclusion}
+\newpage
+
+%########################################################################################
+
+%\null
+%\thispagestyle{empty}
+%\vfill
+%\newpage
+
+\thispagestyle{empty}
+\phantomsection
+\addcontentsline{toc}{section}{Références}
+\bibliography{mybib}
+\thispagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% End of document
+
+\end{document}

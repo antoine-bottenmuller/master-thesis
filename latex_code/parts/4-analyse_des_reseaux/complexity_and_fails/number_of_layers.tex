@@ -1,0 +1,12 @@
+En plus de la corrélation positive établie entre << complexité >> de la fonction structurante cible et succès de convergence du réseau, il semble y avoir également corrélation, mais cette fois-ci négative, entre ces succès et une certaine << complexité >> dans la \textit{configuration} du réseau : son architecture, le nombre de couches morphologiques, la taille des noyaux des couches, ou plus généralement l'ensemble des hyperparamètres du réseau. 
+Cette notion de << complexité >> de la configuration d'un réseau peut se traduire en particulier par la taille et la densité de ce dernier : un réseau morphologique devient davantage << complexe >> si la \textit{taille du support} de ses noyaux $w$ augmente ou si le \textit{nombre de couches} morphologiques successives qu'il contient augmente, donc de manière générale si le nombre de poids apprenables par le réseau augmente. \\
+
+\vspace{-1.6mm}
+\noindent Cette corrélation peut s'expliquer simplement : plus le réseau est grand et dense, plus il existe de configurations possibles du réseau, et donc plus il y aura de minima locaux dans la fonction de perte \textit{loss} vers lesquels le réseau risque de converger. Les configurations possibles du réseau pour des caractéristiques ciblées (comme la forme des noyaux $w$) étant moins nombreuses avec des petits réseaux peu complexes qu'avec de grands réseaux denses. 
+Mais ces explications restent encore une fois des hypothèses, qui doivent être vérifiées. Il doit encore exister une multitude de caractéristiques sur les réseaux ou sur les éléments cibles pouvant avoir un rôle concret dans les succès ou les échecs de convergence des réseaux, car ce problème reste sous-déterminé.
+
+
+%Parler de la relation entre "complexité de la forme du noyau" et multiplicité des solutions locales possibles (minima locaux dans la loss) et mauvaise convergence des réseaux... \\
+
+%-> Parler de l'impact du nombre de couches morphologiques successifs (+ il y en a, + l'état final du réseau après convergence est "random" ou loin de ce que l'on visait, car il y a plus de variables, donc davantage de configurations possibles, donc des minima locaux dans la \textit{loss} plus nombreux et prononcés) 
+%+ D'une manière générale, le nombre d'éléments (poids) apprenables dans le réseau et par le réseau ( + la taille du support des noyaux joue donc également, car il y a plus de poids variables à apprendre, donc plus de configurations possibles)...

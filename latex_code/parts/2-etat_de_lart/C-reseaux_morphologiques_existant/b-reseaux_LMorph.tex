@@ -1,0 +1,36 @@
+La seconde couche morphologique a été introduite par Kirszenberg et al. \cite{Kirszenberg_2021}. Il s'agit de la couche $\mathcal{L}$Morph. %, pour opération Morph-ologique basée sur la moyenne de $\mathcal{L}$ehmer. 
+Tout comme la $p$Conv, elle s'inspire de la formule de la CHM (\ref{CHM}) afin d'adopter le même comportement asymptotique de min et de max que cette dernière. Le but de la $\mathcal{L}$Morph est de donner une meilleure approximation des opérations d'érosion et de dilatation que la $p$Conv, cette dernière présentant la fonction $\frac{1}{p} \log$ sur $w$ dans ses expressions aux limites de $p$ ($+\infty$ et $-\infty$). \\
+%, ainsi que la restriction de l'espace des valeurs de l'image $f$ et de celles du noyau $w$ à $\mathbb{R}_+$. \\
+
+\vspace{-1.6mm}
+L'opération $\mathcal{L}$Morph reprend ainsi la formule de la CHM, en associant au vecteur de pondération \textbf{w} le vecteur unitaire $1$ (on aura donc $\frac{1}{p} \log{(w_i)} = 0$ pour tout $w_i = 1$), et en associant au vecteur principal \textbf{x} le vecteur $(f(y)+w(x-y))_{y \in \breve{W}_x}$, pour tout $x$ dans l'ensemble de définition de l'image considérée. Pour une image $f: I \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}_+$ et un noyau de couche $w: W \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}_+$, et avec $p \in \mathbb{R}$, $\mathcal{L}$Morph s'exprime donc ainsi au pixel $x \in I$ :
+
+\vspace{-2.8mm}
+%\mathcal{L}\text{Morph}
+\begin{equation}
+    \pmb{\mathcal{L}}\textbf{Morph} (f,w,p)(x) = \frac{\sum_{y \in \breve{W}_x} (f(y) + w(x-y))^{p+1}}{\sum_{y \in \breve{W}_x} (f(y) + w(x-y))^p}
+    \label{LMorph}
+\end{equation}
+
+\vspace{4.4mm}
+\noindent On peut donc en déduire les formules de convergence asymptotique suivantes :
+
+%\vspace{0.4mm}
+\begin{equation*} 
+    \lim_{p \rightarrow -\infty} \mathcal{L}\text{Morph}(f,w,p)(x) = \min_{y \in \breve{W}_x} \left \{ f(y) + w(x-y) \right \} = \left ( f \ominus -\breve{w} \right )(x)
+\end{equation*} 
+\begin{equation*} 
+    \lim_{p \rightarrow +\infty} \mathcal{L}\text{Morph}(f,w,p)(x) = \max_{y \in \breve{W}_x} \left \{ f(y) + w(x-y) \right \} = \left ( f \oplus w \right )(x)
+\end{equation*}
+
+\vspace{2mm}
+Tout comme pour la $p$Conv, on peut obtenir avec l'opération $\mathcal{L}$Morph soit une pseudo-dilatation ($p > 0$) soit une pseudo-érosion ($p < 0$), en fonction du signe de son paramètre de contrôle $p$. De plus, lorsque $p \rightarrow +\infty$, la $\mathcal{L}$Morph converge bien asymptotiquement vers la dilation de l'image $f$ avec la fonction structurante $w$. Cependant, lorsque $p \rightarrow -\infty$, la $\mathcal{L}$Morph converge vers l'érosion de $f$ avec la fonction $-\breve{w}$, et non $w$. \\
+
+\vspace{-2mm}
+\noindent Néanmoins, cela ne pose pas de problème dans un scénario d'apprentissage, car on peut facilement obtenir $w$ à partir de sa négation $-w$ en vérifiant simplement si le signe de $p$ est négatif. On pourrait par exemple ajouter devant $w$ une transformation continue de $p$ en son signe. De même, on peut facilement obtenir $w$ à partir de sa symétrie $\breve{w}$ selon une transition douce du signe de $p$. Mais il faudra vérifier avant que de telles transitions n'engendrent pas de problèmes de convergence du réseau. \\
+
+\vspace{-2mm}
+En s'appuyant sur la CHM comme pour la $p$Conv, la couche $\mathcal{L}$Morph proposée présente encore certaines limitations : l'image d'entrée $f$ doit être positive et donc mise en échelle positive, et la fonction structurante (noyau) $w$ également \cite{Kirszenberg_2021, Hermary_2022}.\\
+
+\vspace{-1.6mm}
+\noindent On écrira ainsi la fonction de transformation $T$ : $T(\text{\raisebox{\mylen}{\tiny$\bullet$}},w,p) = \mathcal{L}\text{Morph}(\text{\raisebox{\mylen}{\tiny$\bullet$}},w,p)$.

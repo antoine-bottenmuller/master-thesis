@@ -1,0 +1,20 @@
+Dans le cas des expériences à succès, le réseau converge donc toujours vers la structure cible pour $w_1$ et l'identité pour $w_2$ avec l'\textit{érosion}, et, à l'inverse, vers l'identité pour $w_1$ et la structure cible pour $w_2$ avec la \textit{dilatation}. Ce constat, surprenant à priori, reste à ce jour inexpliqué. Il s'agit d'une configuration très solide, puisqu'il est difficile d'obtenir l'ordre inverse respectif des rôles entre les deux couches, malgré l'ajout de contraintes forçant cette inversion des rôles. Bien qu'elle soit théoriquement tout aussi valide que l'ordre initial, la seule manière qui a fonctionné dans notre étude pour inverser les rôles des deux couches, c'est avec une initialisation de ces dernières dans la configuration visée (forme des deux noyaux $w$ avec l'ordre inversé correspondant, et paramètres $\alpha$ du bon signe et légèrement éloignés de 0, de l'ordre de 0.1). \\
+
+\vspace{-1.4mm}
+\noindent L'ordre systématique entre structure cible et identité, selon l'érosion ou la dilatation, doit être lié aux propriétés de transformation de ces deux opérations sur les images d'entrée, et à l'ordre d'exécution des deux couches du réseau. La rétropropagation du gradient doit également jouer un rôle. Mais la cause de ce résultat reste inconnu.
+
+
+%Parler de la multiplicité des possibilités, par décomposition exacte de l'opération, avec un élément structurant, en deux opérations avec deux éléments structurants. Evoquer le cas du carré 3x3 décomposable en un segment vertical de longueur 3 et un segment horizontal de longueur 3... \\
+
+%Dire que ça dépend de l'ordre d'exécution entre les deux couches, ie entre identité et forme cible, et que ça doit être liée à la rétropropagation du gradient, mais qu'en n'en sait pas davantage, la question reste en suspens)\\
+
+%Dire que c'est une configuration très solide, on n'arrive pas à avoir l'inverse, bien qu'elle soit théoriquement tout aussi valide. Même l'ajout de contraintes indépendantes sur les deux couches n'est pas suffisante. La seule manière dont on a réussi à inverser les rôles des deux couches, c'est avec l'initialisation dans la configuration visée (forme des deux noyaux, et paramètres $\alpha$ du bon signe et légèrement éloignés de 0, de l'ordre de 0.1). 
+
+%%%%%%%%%%%%%%%%%%%%
+
+%-> Dire que, dans les cas avec un succès de convergence (loss faible), on obtient toujours ... 
+%   + illustration (évolution?)
+%-> Dire qu'on obtient, sur beaucoup d'expériences, des échecs 
+%   + illustration (évolution?)
+%-> Dire que c'est une configuration très solide, on n'arrive pas à avoir l'inverse, bien qu'elle soit théoriquement tout aussi valide. Même l'ajout de contraintes indépendantes sur les deux couches n'est pas suffisante. La seule manière dont on a réussi à inverser les rôles des deux couches, c'est avec l'initialisation dans la configuration visée (forme des deux noyaux, et paramètres $\alpha$ du bon signe et légèrement éloignés de 0, de l'ordre de 0.1). 
+%   + illustration (évolution?)

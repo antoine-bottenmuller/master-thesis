@@ -1,0 +1,24 @@
+La partie précédente montre que les réseaux morphologiques 
+%, en l'occurence les réseaux $\mathcal{S}$MorphNetTanh, se comportent très bien et 
+donnent de bons résultats lorsqu'ils ne possèdent qu'une seule couche morphologique et qu'ils n'ont qu'une simple opération d'érosion ou de dilatation à faire. Cependant, lorsque l'on considère des réseaux à deux couches pour des opérations cibles plus complexes comme l'ouverture et la fermeture, qui sont la succession de deux opérations morphologiques fondamentales, l'ensemble des configurations possibles se mutliplie, et la convergence des réseaux se comporte plutôt mal dans plusieurs cas, car ils convergent vers des minima locaux sur la fonction de perte \textit{loss} lors de leur entaînement. \\
+
+\vspace{-1.6mm}
+\noindent C'est pourquoi l'objectif principal devient la recherche de solutions à ces problèmes de convergence pour les réseaux morphologiques à deux couches. 
+Dans les expériences précédentes, on remarque que les cas d'échec sont corrélés à une différence de forme entre les noyaux des deux couches. 
+Or, en morphologie mathématique, dans le cadre d'une ouverture ou d'une fermeture (2.1), c'est le même élément structurtant qui est utilisé pour à la fois l'érosion et la dilatation. De ce fait, dans le cadre d'une opération cible d'ouverture ou de fermeture dans les réseaux morphologiques, on peut avoir l'idée de créer une certaine influence entre les poids de la première couche du réseau et ceux de la seconde, qui puisse faire tendre les deux noyaux à avoir symétriquement les mêmes poids selon le signe de leur paramètres de contrôle ($\alpha_1/\alpha_2)$ respectif. \\
+
+\vspace{-0.6mm}
+Deux méthodes d'influence des poids (dites méthodes de << partage de poids >>) des deux couches d'un réseau ont été implémentées et testées. La première est une méthode de partage de poids dite << dure >>. Il s'agit là de simplement transférer les poids du noyau de la première couche à la seconde couche du réseau lors du passage de la matrice d'images. Dans cette méthode de transfert direct des poids, on peut même considérer les deux couches comme une seule et unique couche, dite << duale >>, qui sera appliquée deux fois successivement (mais de manière différente, i.e. symétriquement selon les conditions) à l'image d'entrée de la couche, et qui possède un seul et unique noyau $w$, mais bien deux paramètres de contrôle indépendants, $\alpha_1$ et $\alpha_2$. \\
+
+\vspace{-1.6mm}
+\noindent La seconde méthode de partage des poids entre la première et la seconde couche morphologique du réseau est une méthode plus indirecte, dite << douce >>. Il s'agit de la formulation d'une métrique de contrainte entre les poids des deux couches, qui est simplement ajoutée dans la \textit{loss}. La correspondance symétrique des deux noyaux n'est ainsi pas directement imposée, mais elle est contrainte dans la fonction de perte : le réseau va alors, lors de son entraînement, tendre vers la similarité symétrique entre les deux noyaux (hors des $\alpha$) en même temps qu'il tend vers une configuration favorable aux bonnes prédictions avec la \textit{MSE} entre images cibles et prédictions, et ce de manière plus ou moins prioritaire sur cette dernière en fonction d'un paramètre $\lambda$. %\\
+
+%\vspace{-1.6mm}
+%\noindent Ces deux méthodes de partage de poids sont formulées dans la suite de cette partie.
+
+%%% Pour le partage dur :
+%Ici, réseaux à double couches ! Seulement, les deux couches auront les mêmes poids ! ...
+
+%%% Pour contraintes (alternative douce au partage de poids) :
+%- Seulement pour les réseaux à double couches (voire étendu aux réseaux à un nombre paire de couches). \\
+%- Dans les réseaux habituels : loss = MSE(Image cible, Image prédite) ; Ici, on modifie la formule de la loss ! Avec une 

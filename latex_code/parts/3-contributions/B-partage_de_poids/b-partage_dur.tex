@@ -1,0 +1,46 @@
+La méthode de partage de poids dite << dure >> fait un partage direct des poids du noyau de la première couche avec ceux du noyau de la seconde couche du réseau. Les deux couches ayant ainsi exactement le même noyau, on peut les considérer comme une seule et même couche, dite << duale >>, mais avec bien deux paramètres de contrôle indépendants, notés $\alpha_1$ et $\alpha_2$. 
+%, par appliquer successivement deux fois le filtre $w$ de manière contrôlée différente sur l'image d'entrée de couche. 
+Ces dernières permettent aux poids du même noyau $w$ d'être appliqués deux fois successivement mais de manière différente à l'image en entrée de couche, la première fois sous le contrôle de $\alpha_1$, la seconde fois sous celui de $\alpha_2$. \\
+
+\vspace{-1.6mm}
+\noindent Cependant, d'après les formules aux limites de $\mathcal{S}$MorphTanh (p. 22), il est nécessaire de considérer la symétrie de $w$ quelque part lorsque $\alpha_1$ et $\alpha_2$ sont de signe opposé, et donc pour que le réseau puisse effectivement converger vers une ouverture ou une fermeture de $f$ par $w$. On va d'abord considérer la formule de $\mathcal{S}$MorphTanh sous symétrie conditionnelle, notée $\mathcal{S}\text{MT}_{\text{cond}}$, qui est définie pour toute image $f: I \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}$, tout noyau $w: W \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}$ et tout réel $\alpha \in \mathbb{R}$ de la manière suivante (\ref{SMorphTanh_condi}) : \\
+
+\vspace{-5.0mm}
+\begin{equation}
+    \mathcal{S}\text{MT}_{\text{cond}} (f,w,\alpha) = 
+    \begin{cases}
+        \hspace{1.4mm} \mathcal{S}\text{MorphTanh} (f,w,\alpha) & \mbox{si} \hspace{3mm} \alpha \geqslant 0 \\
+        \hspace{1.4mm} \mathcal{S}\text{MorphTanh} (f,\breve{w},\alpha) & \mbox{sinon}
+    \end{cases}
+    \label{SMorphTanh_condi}
+\end{equation}
+
+\vspace{2.5mm}
+\noindent Malgré la conditionnalité sur $\alpha$ dans la définition de la fonction $\mathcal{S}\text{MT}_{\text{cond}}$, la transition du noyau $w$ à sa symétrique, quand $\alpha$ passe d'un signe négatif à un signe positif ou inversement dans la formule de $\mathcal{S}$MorphTanh, reste lisse, rendant $\mathcal{S}\text{MT}_{\text{cond}}$ continue (mais pas forcément dérivable) en $\alpha = 0$, grâce au $\tanh{(\alpha)}$ devant $w$. \\
+
+\vspace{-1.0mm}
+La fonction de transformation de la couche $\mathcal{S}$MorphTanhDual est ainsi définie, pour toute image $f: I \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}$ et tout noyau de couche $w: W \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}$, et avec $\alpha_1,\alpha_2 \in \mathbb{R}$, par : \\
+
+\vspace{-4.0mm}
+\begin{equation}
+    \pmb{\mathcal{S}}\textbf{MorphTanhDual} (f,w,\alpha_1,\alpha_2) = \mathcal{S}\text{MT}_{\text{cond}} \left ( \mathcal{S}\text{MT}_{\text{cond}} ( f , w , \alpha_1 ) , w , \alpha_2 \right )
+    \label{SMorphTanhDual}
+\end{equation}
+
+\vspace{5mm}
+\noindent Ainsi, si $\alpha_1$ et $\alpha_2$ ont un signe opposé, on obtient l'ouverture (si $\alpha_1 \ll 0$ et $\alpha_2 \gg 0$) ou la fermeture (si $\alpha_1 \gg 0$ et $\alpha_2 \ll 0$) de l'image $f$ par la fonction structurante $w$. \\
+
+\vspace{-1.6mm}
+\noindent On a donc les limites asymptotiques de $\mathcal{S}$MorphTanhDual suivantes : \\
+
+%formules asymptotiques avec ouverture et fermeture
+\vspace{-5.0mm}
+\begin{equation*} 
+    \lim_{\substack{\alpha_1 \rightarrow -\infty \\ \alpha_2 \rightarrow +\infty}} \mathcal{S}\text{MorphTanhDual}(f,w,\alpha_1,\alpha_2) = f \circ w
+\end{equation*} 
+\begin{equation*} 
+    \lim_{\substack{\alpha_1 \rightarrow +\infty \\ \alpha_2 \rightarrow -\infty}} \mathcal{S}\text{MorphTanhDual}(f,w,\alpha_1,\alpha_2) = f \bullet w
+\end{equation*}
+
+\vspace{2.5mm}
+\noindent On obtient bien avec $\mathcal{S}$MorphTanhDual, aux limites, l'ouverture et la fermeture.

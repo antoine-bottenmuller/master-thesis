@@ -1,0 +1,51 @@
+La dernière couche morphologique a été introduite par Hermary et al. \cite{Hermary_2022}. Il s’agit de la couche $\mathcal{S}$Morph. Elle s'inspire de la couche $\mathcal{L}$Morph, en modifiant la formule dans l'objectif d'éviter les contraintes de positivité de l'image $f$ en entrée et du noyau $w$ de la couche. Pour cela, la $\mathcal{S}$Morph prend la forme d'un $\alpha$-softmax \cite{Lange_2014}. \\
+
+\vspace{-1.6mm}
+\noindent Soit $\alpha \in \mathbb{R}$ un réel. La fonction $\alpha$-softmax de paramètre $\alpha$ est définie pour tout vecteur $\textbf{x} = (x_i)_{i \in \llbracket 1,n \rrbracket} \in \mathbb{R}^n$ par :
+
+\vspace{-3.6mm}
+\begin{equation}
+    \mathcal{S}_\alpha(\textbf{x}) = \frac{\sum_{i=1}^n x_i e^{\alpha x_i}}{\sum_{i=1}^n e^{\alpha x_i}}
+    \label{alpha_softmax}
+\end{equation}
+
+\vspace{3.4mm}
+\noindent Pour $\alpha = 0$, la formule devient la moyenne arithmétique des $x_i$.
+Quand le paramètre $\alpha$ devient très grand ($\alpha \rightarrow +\infty$), les $e^{\alpha x_i}$ deviennent très grands, et c'est la plus grande valeur des coordonnées de \textbf{x} qui domine la somme des $e^{\alpha x_i}$, elle domine donc les sommes au dénominateur et au numérateur dans la formule du $\alpha$-softmax. À l'inverse, quand $\alpha$ devient très petit ($\alpha \rightarrow -\infty$), les $e^{\alpha x_i}$ tendent très vite vers $0^+$, et c'est la plus petite valeur (non nulle) de \textbf{x} qui domine la somme des $e^{\alpha x_i}$, et donc celles au dénominateur et au numérateur. Les propriétés asymptotiques sont donc :
+
+\vspace{3mm}
+\noindent\begin{minipage}{.5\linewidth}
+    \begin{equation*} 
+        \lim_{\alpha \rightarrow -\infty} \mathcal{S}_\alpha(\textbf{x}) = \min_{i \in \llbracket 1,n \rrbracket} x_i
+    \end{equation*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \begin{equation*} 
+        \lim_{\alpha \rightarrow +\infty} \mathcal{S}_\alpha(\textbf{x}) = \max_{i \in \llbracket 1,n \rrbracket} x_i
+    \end{equation*}
+\end{minipage}
+
+\vspace{4.6mm}
+L'opération $\mathcal{S}$Morph reprend la formule du $\alpha$-softmax en remplaçant le vecteur \textbf{x} par le vecteur $(f(y)-w(x-y))_{y \in \breve{W}_x}$. Ainsi, pour une image $f: I \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}$ et un noyau de couche $w: W \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}$, et avec $\alpha \in \mathbb{R}$, $\mathcal{S}$Morph s'exprime donc ainsi au pixel $x \in I$ :
+
+\vspace{-3.4mm}
+\begin{equation}
+    \pmb{\mathcal{S}}\textbf{Morph} (f,w,\alpha)(x) = \frac{\sum_{y \in \breve{W}_x} (f(y) + w(x-y))e^{\alpha (f(y) + w(x-y))}}{\sum_{y \in \breve{W}_x} e^{\alpha (f(y) + w(x-y))}}
+    \label{SMorph}
+\end{equation}
+
+\vspace{4.6mm}
+\noindent On obtient les mêmes expressions de $\mathcal{S}$Morph aux limites de $\alpha$ que pour $\mathcal{L}$Morph aux limites de $p$ ($+\infty$ et $-\infty$) :
+
+\begin{equation*} 
+    \lim_{\alpha \rightarrow -\infty} \mathcal{S}\text{Morph}(f,w,\alpha)(x) = \min_{y \in \breve{W}_x} \left \{ f(y) + w(x-y) \right \} = \left ( f \ominus -\breve{w} \right )(x)
+\end{equation*} 
+\begin{equation*} 
+    \lim_{\alpha \rightarrow +\infty} \mathcal{S}\text{Morph}(f,w,\alpha)(x) = \max_{y \in \breve{W}_x} \left \{ f(y) + w(x-y) \right \} = \left ( f \oplus w \right )(x)
+\end{equation*}
+
+\vspace{2mm}
+L'avantage de la formule du $\mathcal{S}$Morph est qu'elle est définie pour toute image $f$ et tout noyau $w$ à valeurs dans R tout entier. Ainsi, il n'y a plus besoin de vérifier la positivité des valeurs de $f$ et $w$ et de les mettre en échelle positive comme pour $\mathcal{L}$Morph. \\
+
+\vspace{-1.6mm}
+\noindent On écrira ainsi la fonction de transformation $T$ : $T(\text{\raisebox{\mylen}{\tiny$\bullet$}},w,\alpha) = \mathcal{S}\text{Morph}(\text{\raisebox{\mylen}{\tiny$\bullet$}},w,\alpha)$.

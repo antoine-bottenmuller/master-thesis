@@ -1,0 +1,16 @@
+Les réseaux morphologiques sont construits sous l'architecture telle que décrite et présentée dans la partie état de l'art, figure \ref{fig:architecture_reseau_morpho}, avec $n$ couches morphologiques du type considéré ($p$Conv, $\mathcal{L}$Morph, $\mathcal{S}$Morph/Tanh), disposées successivement entre une standardisation au début du réseau et une couche de convolution de taille 1x1x1 en fin du réseau. En l'occurence, pour les réseaux $\mathcal{S}$MorphNet (resp. $\mathcal{S}$MorphNetTanh) que l'on considère ici, le réseau possèdera $n$ couches $\mathcal{S}$Morph (resp. $\mathcal{S}$MorphTanh). \\
+
+\vspace{-1.2mm}
+\noindent Comme vu dans les parties précédentes, chaque couche morphologique, par sa définition, ne pourra avoir l'effet que d'une (pseudo-)opération morphologique \textit{primaire}, à savoir soit celle d'une \textit{érosion} soit celle d'une \textit{dilatation}, définie en fonction de ka valeur du paramètre de contrôle $\alpha$ (ou $p$) de la couche. En particulier, si $\alpha$ (ou $p$) tend vers $- \infty$, alors l'effet de la couche tendra vers celle d'une érosion exacte, et si $\alpha$ (ou $p$) tend vers $+ \infty$, alors son effet tendra vers celle d'une dilatation exacte. \\
+
+\vspace{-1.2mm}
+\noindent De ce fait, pour que le réseau en lui-même puisse avoir l'effet, sur les images en entrée, d'une opération primaire, une seule et unique couche morphologique suffit au sein de ce réseau. Pour qu'il ait l'effet d'une ouverture ou d'une fermeture, qui sont tous deux la composition de deux opérations primaires successives, on munira naturellement le réseau de deux couches morphologiques, en espérant que chacune tende soit vers l'érosion exacte soit vers la dilatation exacte. \\
+
+\vspace{0.6mm}
+\noindent Vient alors une question : que se passe-t-il si l'on munit le réseau de plusieurs couches morphologiques successives, deux par exemple, pour une opération cible \textit{primaire} ? \\
+
+\vspace{1.0mm}
+On souhaiterait ici comprendre comment le réseau se comporterait dans une telle configuration. On aimerait savoir s'il arriverait à trouver une décomposition exacte de l'élément (ou fonction) structurant cible en deux éléments successifs, et s'il arriverait à converger correctement (avec des paramètres de contrôle $\alpha / p$ de grande amplitude, et une valeur de \textit{loss} faible sur les prédictions faites). Par exemple, une décomposition exacte d'une érosion ou d'une dilatation par un élément structurant \textit{carré} de taille 3x3 est la même opération successive par un segment vertical de longueur 3 (et de largeur 1) puis par un segment horizontal de même taille, ou bien inversement. \\
+
+\vspace{-1.2mm}
+\noindent On décomposera cette analyse en deux partie : celle pour l'opération cible d'\textit{érosion} sur un réseau à deux couches, et celle pour l'opération cible de \textit{dilatation} sur un réseau à deux couches. On considérera ici les réseaux $\mathcal{S}$MorphNet et $\mathcal{S}$MorphNetTanh.

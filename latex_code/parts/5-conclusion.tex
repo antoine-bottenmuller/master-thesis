@@ -1,0 +1,46 @@
+Les travaux menés dans le cadre de ce projet << Réseaux de neurones morphologiques >> sont multiples et variés. Ils ont abouti à différents résultats pour l'amélioration de la convergence de ces réseaux, ainsi qu'à des analyses de leurs propriétés sur diverses aspects. Dans la continuité des constats de l'état de l'art, notamment ceux de Kirszenberg et al. \cite{Kirszenberg_2021} et de Hermary et al. \cite{Hermary_2022}, c'est le réseau $\mathcal{S}$MorphNet, plus efficace que les autres de la littérature, qui a été en particulier étudié pour ce projet. \\
+
+\vspace{-1.0mm}
+\noindent Ce réseau $\mathcal{S}$MorphNet converge, lors de son entraînement, avec une haute précision et une grande rapidité, notamment dans le cadre d'opérations cibles élémentaires (érosion ou dilatation) avec une unique couche morphologique. Mais il fait cependant face à de nombreux échecs de convergence, en particulier pour les opérations plus complexes d'ouverture et de fermeture avec deux couches morphologiques au sein du réseau. Plusieurs pistes ont alors été explorées dans le but d'améliorer la convergence de ce réseau morphologique, et de pallier notamment ces échecs-là de convergence. \\
+
+\vspace{-1.0mm}
+\noindent Quatre pistes principales se distinguent dans ces travaux : \\
+
+\vspace{-3.6mm}
+\begin{itemize}%[leftmargin=*]
+    \item[$\bullet$] La définition d'une nouvelle couche morphologique $\mathcal{S}$MorphTanh, inspirée directement de la couche $\mathcal{S}$Morph. Ses performances au sein d'un réseau semblent équivalentes à celles de $\mathcal{S}$Morph, mais la formulation de sa fonction de transformation permet néanmoins de résoudre le problème de signe devant $w$ dans l'expression asymptotique de $\mathcal{S}$Morph lorsque $\alpha \rightarrow -\infty$ ;
+    
+    \item[$\bullet$] La mise en place de deux méthodes différentes de partage de poids entre les noyaux $w$ de deux couches morphologiques, ne servant pas à une amélioration nette de la convergence des réseaux, mais qui permet à ces deux noyaux-là de converger vers la même forme de structure dans le cadre d'une opération cible d'ouverture ou de fermeture pour des réseaux bi-couches ;
+    
+    \item[$\bullet$] Le développement de différentes métriques de contraintes sur les noyaux $w$ et sur les paramètres de contrôle $\alpha$ des couches morphologiques, permettant une meilleure convergence de ces dernières lors de l'entraînement du réseau, sur la base d'informations géométriques connues, à priori, à propos de caractéristiques visées de ces noyaux et paramètres de contrôle ;
+    
+    \item[$\bullet$] La modulation de l'initialisation des noyaux $w$, passant d'une initialisation aléatoire de loi normale centrée réduite à une initialisation gaussienne 2D, permettant de mener la convergence du réseau à un succès pour certaines fonctions structurantes cibles seulement, telles la \textit{cross3}, mais n'apportant pas d'amélioration nette sur l'ensemble des structures cibles.
+\end{itemize}
+
+\vspace{1.0mm}
+\noindent Aucune solution plus générale et universelle n'a été trouvée ou développée, mais davantage des solutions locales s'inscrivant dans des tâches cibles spécifiques.
+%No universal solution found, but local ones for specific target tasks!
+
+
+\newpage
+
+Les analyses de ces réseaux morphologiques, quant à elles, ont pu déboucher sur plusieurs conclusions et davantage d'hypothèses et de questions. L'étude de tels réseaux est en effet complexe, et la plupart des observations ne sont pas encore expliquées. À la suite de ces travaux et de l'exploration des réseaux morphologiques, plus de questions se sont ouvertes que ne se sont résolues, et la majorité reste en suspens. \\
+
+\vspace{-1.6mm}
+\noindent Ces analyses ont néanmoins permis de mieux comprendre certains aspects du comportement des réseaux morphologiques. En particulier, elles ont permis d'établir une corrélation entre la complexité des structures et les échecs de convergence des réseaux, de mieux comprendre l'impact du jeu de données d'entraînement sur l'état final des poids des couches, et de constater la direction de convergence forcée d'un réseau bi-couches pour une opération cible primaire, qui est strictement symétrique entre dilatation et érosion. Elles ont également permis de mieux comprendre l'impact des paramètres de contrôle $\alpha$, et en particulier leur signe, dans la direction de convergence des couches morphologiques sur les cas d'échec, probablement plus importante que la forme des noyaux $w$. Une application rapide à du débruitage automatique poivre \& sel a enfin été étudiée, et a permis de montrer une certaine efficacité visuelle des réseaux sur les résultats de prédiction, malgré un état des poids peu satisfaisant. \\
+%The analysis is very complex and most of the things is not explained!
+
+\vspace{-1.0mm}
+Bien d'autres choses encore, d'autres méthodes et d'autres procédés, ont été implémentés et testés sur ces réseaux morphologiques, mais la plupart n'a pas donné les résultats espérés. Par exemple, une modulation de la définition de la fonction de perte \textit{loss} évoluant au cours du temps et des époques d'entraînement a été pensée et testée : il s'agissait de rendre \textit{dynamiques} (i.e. qui évoluent au cours des époques) les pondérations $\lambda$ des métriques de contrainte dans la fonction \textit{loss}. Cette évolution peut se faire de manière continue linéaire, jusqu'à ce que la valeur de toutes les pondérations $\lambda$ atteigne 0 ; de manière discrète par étapes, avec une valeur des pondérations $\lambda$ qui décrémente à chaque époque d'une valeur fixe ; ou encore de manière cyclique, par exemple sinusoïdale cardinale, afin de rappeler au réseau les contraintes attendues toutes les $n$ périodes. Ce projet garde encore beaucoup de questions ouvertes et de méthodes à tester et évaluer. Une suite à ces travaux serait souhaitable. \\
+%(cyclique, avec étapes, graduée, etc.)
+
+%%% POUR ALLER PLUS LOIN %%%
+
+Dans un travail futur, une solution possible pour pallier le problème restant de symétrie des noyaux $w$ dans la formulation asymptotique de la couche $\mathcal{S}$MorphTanh, lorsque $\alpha \rightarrow -\infty$, serait de remplacer, dans la formule de $\mathcal{S}$MorphTanh en question, les << $w(x-y)$ >> par :
+
+\vspace{-0.6mm}
+$$w(x-y)\frac{1+\tanh{(\alpha)}}{2} + w(y-x)\frac{1-\tanh{(\alpha)}}{2}$$
+%$$f(y)+\tanh{(\alpha)} \left ( w(x-y)\frac{1+\tanh{(\alpha)}}{2} + w(y-x)\frac{1-\tanh{(\alpha)}}{2} \right )$$
+
+\vspace{4.0mm}
+\noindent À condition que le support du noyau $w$ soit symétrique (sinon, si $y-x$ n'est pas dans le support, on remplace $w(y-x)$, qui n'est pas définie, par $-\infty$). Elle permettrait également de lisser davantage l'espace de perte. Il serait donc suggérable de l'explorer.

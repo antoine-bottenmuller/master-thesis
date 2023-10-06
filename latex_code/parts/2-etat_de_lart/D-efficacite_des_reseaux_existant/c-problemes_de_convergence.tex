@@ -1,0 +1,44 @@
+L'analyse des résultats des différentes expériences précédentes montre une bien meilleure convergence et une meilleure précision des réseaux $\mathcal{S}$MorphNet par rapport aux réseaux $\mathcal{L}$MorphNet et $p$ConvNet. Ces meilleures performances de la part de $\mathcal{S}$MorphNet se traduit à la fois par une plus petite valeur de perte globale \textit{loss} de l'état final des réseaux (et donc de meilleures prédictions), par une plus nette ressemblance des noyaux du réseau avec la fonction structurante cible (avec une RMSE bien plus faible), et par un nombre moyen d'époques bien plus bas pour atteindre la convergence (et donc une plus grande vitesse d'apprentissage). Et ce en moyenne, à la fois pour les expériences d'érosion, de dilatation, d'ouverture et de fermeture. Les réseaux $\mathcal{S}$MorphNet sont donc plus performants et précis que les deux autres existant. \\
+
+\vspace{-1.8mm}
+Cependant, l'analyse de ces résultats montre également que les différents réseaux morphologiques souffrent de problèmes de convergence sur différents aspects. Pour les expériences avec des réseaux à une seule couche morphologique (érosion fig. \ref{fig:art_resultats_erosion} ou dilatation fig. \ref{fig:art_resultats_dilation}), aucun problème majeur hors-mis ceux évoqués précédemment n'est à déplorer. Par contre, pour les expériences avec des réseaux à deux couches morphologiques (ouverture fig. \ref{fig:art_resultats_opening} ou fermeture fig. \ref{fig:art_resultats_closing}), les résultats obtenus soulèvent plusieurs problèmes en termes de comportement de convergence pour les couches $\mathcal{L}$Morph et $\mathcal{S}$Morph, en particulier pour les fonctions structurantes cibles cross3 et disk2 (fig. \ref{fig:art_resultats_closing}), où les couches n'arrivent pas à trouver la bonne forme de noyau, voire à trouver la bonne opération ciblée (par rapport au signe de $p$/$\alpha$), et entraînent donc une \textit{loss} sur le réseau plus élevée que les autres expériences et autres fonctions structurantes cibles. \\
+
+\vspace{-1.6mm}
+Cela a conduit Hermary et al. \cite{Hermary_2022} à effectuer une analyse plus approfondie de la convergence progressive des poids (noyau et paramètre de contrôle) de ces couches au fil des époques pendant la phase d'entraînement. Pour les réseaux à deux couches morphologiques, il en résulte ainsi les deux principales constatations suivantes : \\
+
+\vspace{-3.0mm}
+\begin{itemize}%[leftmargin=*]
+    \item[$\bullet$] D'abord, la manière dont les poids des noyaux se mettent à jour tout au long du processus d'apprentissage présente plusieurs similitudes : la convergence vers la forme correcte est plus rapide pour la deuxième couche que pour la première (car ses poids sont mis à jour avant ceux de la première couche lors de la rétropropagation), de même que la convergence du paramètre $p$/$\alpha$ vers une plage de valeurs garantissant que l'opération appliquée par la couche est une bonne approximation d'une dilatation ou d'une érosion (et non que pseudo).
+%\end{itemize}
+    \vspace{1.6mm}
+%\begin{itemize}%[leftmargin=*]
+    \item[$\bullet$] Ensuite, le schéma de mise à jour des poids semble commencer sur les bords du noyau, pour ensuite se propager vers le centre. Cette dernière observation pourrait être la raison de l'échec de la convergence pour cross3 et disk2, car l'étendue de ces fonctions structurantes est plus petite que leur support spatial, ne fournissant ainsi aucun point d'ancrage sur les bords pour que les poids se propagent vers le centre du noyau. Mais cela ne reste qu'une hypothèse.
+\end{itemize}
+
+
+\newpage
+
+% Pour dire l'impact de p/a sur les échecs et problèmes de convergence !!
+Toujours sur les cas d'échec avec les réseaux à deux couches morphologiques (fig. \ref{fig:art_resultats_opening} et fig. \ref{fig:art_resultats_closing}), si l'on se penche sur les valeurs des paramètres de contrôle $p$/$\alpha$, on remarque que, dans les cas d'échec, les couches des réseaux n'ont pas convergé vers la bonne opération (entre érosion et dilatation), avec des $p$/$\alpha$ de signe opposé à ce qu'ils devraient prendre, et de faible amplitude également, comme c'est le cas par exemple avec cross3 (ouverture et fermeture) pour les réseaux $\mathcal{L}$Morph et $\mathcal{S}$Morph, ou encore disk2 (fermeture) pour $\mathcal{S}$Morph. Le signe vers lequel tendent les $p$/$\alpha$ des deux couches d'un réseau ainsi que leur amplitude semblent en forte correlation avec les échecs de convergence. La condition $|\alpha| > 10$ est en pratique suffisante pour reproduire une dilatation ou une érosion avec $\mathcal{S}$Morph, ce qui n'est pas le cas avec les échecs de convergence, où l'on a donc que des pseudo-opérations. \\
+
+
+\vspace{0.4mm}
+En conclusion, l'étude de Hermary at al. \cite{Hermary_2022} montre que l'\textit{étendue} d'une fonction structurante (i.e. l'espace occupé par les éléments de son support distingués du fond) par rapport à la taille de son support spatial semble être liée à la capacité des couches morphologiques à apprendre correctement cette fonction cible pour l'ouverture et la fermeture, mais cela n'explique pas à lui seul l'ensemble des cas d'échec présentés. 
+
+\vspace{3.0mm}
+\noindent La convergence des réseaux vers des minima locaux à forte attraction est également une explication plausible, car l'identification d'une fonction structurante basée uniquement sur des images originales et des images transformées est une tâche sous-déterminée, plusieurs solutions peuvant exister. Par exemple, deux fonctions structurantes symétriquement décalées se compensent mutuellement et sont aussi valides en tant que solution que deux fonctions centrées (résultats que l'on cherche à obtenir). 
+
+\vspace{3.0mm}
+\noindent Intégrer des informations à priori (symétrie, étendue spatiale) sur la fonction structurante recherchée dans la fonction de perte d'entraînement optimisée pourrait être une solution potentielle, mais ces informations a priori pourraient être difficiles à obtenir dans des cas d'utilisation pratiques, lorsque l'on ne connait pas la forme cherchée.
+
+\vspace{3.0mm}
+\noindent Cette étude de Hermary et al. a permis de mieux comprendre l'impact de la rétropropagation du gradient, lors de l'entraînement des réseaux, dans la tendance de la seconde couche à mieux converger vers la solution attendue, ses poids se mettant à jour en premier par rapport à la première couche. Elle montre également que la valeur, en particulier le signe, du paramètre de contrôle $p$/$\alpha$ des couches morphologiques semble fortement correlée à la bonne ou mauvaise convergence des réseaux. \\
+
+
+\vspace{0.6mm}
+Pour la suite, la couche $\mathcal{S}$Morph ayant démontré de bien meilleurs résultats de convergence et de précision par rapport aus deux autres couches $\mathcal{L}$Morph et $p$Conv, nous travaillerons uniquement sur cette couche-ci. L'objectif sera alors d'étudier plus en profondeur le comportement des réseaux $\mathcal{S}$MorphNet, et de trouver des solutions pour améliorer la convergence de ces réseaux afin d'éviter les cas d'échecs tels que ceux présentés dans cette partie. Il s'agira d'un travail principalement exploratoire.
+
+%%%%% NE PAS OUBLIER DE METTRE LES REFERENCES DANS L'ETAT DE L'ART!!!! %%%%%
+%\noindent 1. Scanner tout l'état de l'art et ajouter les références là où besoin\\     --- OK
+%\noindent 2. Remplacer tous les [ref] ou ref ou [] par les références adéquates\\      --- OK
+%\noindent 3. Repasser les références, et vérifier qu'il n'y ait pas de \textit{null}!! --- OK

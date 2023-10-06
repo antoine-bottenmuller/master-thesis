@@ -1,0 +1,56 @@
+La toute première couche morphologique a été introduite par Masci et al. \cite{Masci_2012} suite aux travaux de Angulo et al. \cite{Angulo_2010}. Il s'agit de la couche $p$-convolution. Dans une telle couche, l'approximation, qui définie $T$, des opérations d'érosion et de dilatation se base sur la moyenne contre-harmonique (CHM), également dite de Lehmer \cite{Bullen_1987}. \\
+
+\vspace{-1.8mm}
+\noindent La CHM du vecteur $\textbf{x} = (x_1,...,x_n) \in (\mathbb{R}_+)^n$ pondéré par $\textbf{w} = (w_1,...,w_n) \in (\mathbb{R}_+)^n$ et d'ordre $p \in \mathbb{R}$ est : %définie par :
+
+\vspace{-5mm}
+\begin{equation}
+    CHM(\textbf{x},\textbf{w},p) = \frac{\sum_{i=1}^n w_ix_i^p}{\sum_{i=1}^n w_ix_i^{p-1}}
+    \label{CHM}
+\end{equation}
+
+\vspace{2mm}
+%Pour $p = 0$ (resp. $p = 1$), la moyenne de Lehmer $CHM(\textbf{x},\textbf{w},p)$ correspond à la moyenne harmonique pondérée (resp. moyenne arithmétique pondérée). Elle correspond à la moyenne contraharmonique lorsque $p = 2$ et $\textbf{w} = 1$ (toutes les coordonnées de \textbf{w} étant égales à $1$). 
+\noindent Étant donné que les vecteurs \textbf{x} et \textbf{w} ont des coordonnées positives, c'est le maximum (resp. minimum) des coordonnées de \textbf{x} qui domine le numérateur et le dénominateur de l'équation \ref{CHM} lorsque $p$ tend vers $+\infty$ (resp. $-\infty$). On a ainsi aux limites : %Comportement asymptotique :
+
+\vspace{2.6mm}
+\noindent\begin{minipage}{.5\linewidth}
+    \begin{equation*} 
+        \lim_{p \rightarrow -\infty} CHM(\textbf{x},\textbf{w},p) = \min_{i \in \llbracket 1,n \rrbracket} x_i 
+    \end{equation*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \begin{equation*} 
+        \lim_{p \rightarrow +\infty} CHM(\textbf{x},\textbf{w},p) = \max_{i \in \llbracket 1,n \rrbracket} x_i 
+    \end{equation*}
+\end{minipage}
+
+\vspace{4mm}
+%\noindent Ainsi, la CHM permet également des approximations douces des opérations de minimum et de maximum pour de grandes valeurs négatives et positives de p. \\
+
+%\vspace{-1.4mm}
+La formule de la $p$-convolution se base sur celle de la CHM afin d'avoir le même comportement asymptotique que ce dernier en minimum ou maximum des coordonnées de \textbf{x}. La $p$-convolution $p\text{Conv}(f,w,p)$ d'une image $f: I \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}_+$ au pixel $x \in I$ avec un noyau de convolution positif $w: W \subseteq \mathbb{Z}^2 \rightarrow \mathbb{R}_+$ et avec $p \in \mathbb{R}$ est définie par :
+
+\vspace{0.5mm}
+\begin{equation}
+    \pmb{p}\textbf{Conv} (f,w,p)(x) = (f *_p w)(x) = \frac{\sum_{y \in \breve{W}_x} f(y)^p w(x-y)}{\sum_{y \in \breve{W}_x} f(y)^{p-1} w(x-y)}
+    \label{pConv}
+\end{equation}
+
+\vspace{4mm}
+\noindent L'étude des propriétés asymptotyques de la $p$Conv a notamment été faite par Jesús Angulo et al. \cite{Angulo_2010}, qui montrent qu'aux limites de $p$, la $p$Conv se comporte ainsi :
+
+\vspace{-0.4mm}
+\begin{equation*} 
+    (f *_p w)(x) \underset{p \to -\infty}{\longrightarrow} \min_{y \in \breve{W}_x} \left \{ f(y) - \frac{1}{p} \log{(w(x-y))} \right \} = \left ( f \ominus \frac{1}{p} \log{ (\breve{w}) } \right )(x)
+\end{equation*} 
+\begin{equation*} 
+    (f *_p w)(x) \underset{p \to +\infty}{\longrightarrow} \max_{y \in \breve{W}_x} \left \{ f(y) + \frac{1}{p} \log{(w(x-y))} \right \} = \left ( f \oplus \frac{1}{p} \log{ (w) } \right )(x)
+\end{equation*}
+
+\newlength{\mylen}
+\setbox1=\hbox{$\bullet$}\setbox2=\hbox{\tiny$\bullet$}
+\setlength{\mylen}{\dimexpr0.5\ht1-0.5\ht2}
+
+\vspace{3mm}
+On remarque ainsi que l'expression de la $p$Conv aux limites de $p$ se rapproche bien de la formule (\ref{grey_erosion}) de l'érosion ($p \rightarrow -\infty$) et de celle (\ref{grey_dilation}) de la dilatation ($p \rightarrow +\infty$), à la fonction $\frac{1}{p} \log$ près sur $w$. Au sein d'une couche $p$-convolution de noyau $w$ et $p \in \mathbb{R}$, la fonction de transformation $T$ s'exprimera donc par : $T(\text{\raisebox{\mylen}{\tiny$\bullet$}},w,p) = p\text{Conv}(\text{\raisebox{\mylen}{\tiny$\bullet$}},w,p)$. La $p$\text{Conv} étant dérivable partout sur $\mathbb{R}$ par rapport aux poids $w_i$, le gradient peut être calculé et l'apprentissage du réseau peut se faire avec une telle couche $p$-convolution.

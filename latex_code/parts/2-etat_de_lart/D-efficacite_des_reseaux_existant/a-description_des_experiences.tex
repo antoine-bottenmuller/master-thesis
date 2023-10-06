@@ -1,0 +1,52 @@
+A partir des trois différentes couches morphologiques, telles que définies dans la partie précédente, sont construits trois types de réseaux de neurones morphologiques correspondants : les réseaux $p$ConvNet (composés de couches $p$Conv), les réseaux $\mathcal{L}$MorphNet (couches $\mathcal{L}$Morph) et les réseaux $\mathcal{S}$MorphNet (couches $\mathcal{S}$Morph). \\
+
+\vspace{-2.0mm}
+\noindent Sur la base de l'architecture générale des réseaux morphologiques, illustrée fig. \ref{fig:architecture_reseau_morpho}, les structures considérées et expérimentées dans la littérature \cite{Kirszenberg_2021, Hermary_2022} sont celles à 1 couche morphologique pour l'étude de l'érosion et de la dilatation, et celles à 2 couches morphologiques pour l'étude de l'ouverture et de la fermeture. Dans tous les cas, une standardisation en entrée du réseau et une couche de convolution $1 \times 1 \times 1$ en sortie sont imposées, afin d'améliorer la convergence des réseaux lors de leur entraînement (démontré dans \cite{Hermary_2022}). Dans leur article, Hermary et al. exposent les résultats de leurs recherches sur la comparaison de l'efficacité de ces trois types de réseaux (récapitulés dans la sous-partie suivante) sur la base d'expériences telles que décrites ci-après. \\
+
+\vspace{-1.4mm}
+%Pour d'abord être plus précis sur les termes employés, on parle d'
+Soyons d'abord précis sur les termes employés. On parle d'<< expérience >> ou de << scénario >> pour désigner le paramétrage d'un réseau de neurones dans le cadre de son entraînement, pour lequel les hyperparamètres (taille des filtres, nombre de couches, éléments cibles, etc.) ont un état prédéfini particulier \cite{Keiller_2019}. Si deux réseaux de neurones ont exactement le même paramétrage d'entraînement, alors il s'agit d'une seule et même expérience. À l'inverse, si deux réseaux ont au moins un hyperparamètre dont l'état diffère de l'un à l'autre, alors il s'agit de deux expériences différentes. \\
+%Si, pour deux entraînements de réseaux séparés, l'ensemble des paramètres pré-entraînement ont exactement le même état entre les deux, alors ...
+
+\vspace{-2.0mm}
+\noindent Les différents objets composant ces << paramètres de réseaux pré-entraînement >> sont aussi bien les paramètres caractérisant l'architecture du réseau en question (type de réseau morphologique entre $p$ConvNet, $\mathcal{L}$MorphNet et $\mathcal{S}$MorphNet ; nombre de couches morphologiques dans le réseau ; présence ou non de couches de rééchelonnage ; type d'état initial des poids des couches ; formule de la fonction de perte \textit{loss} ; ... | voir la section "réseau" en bas de la fig. \ref{fig:architecture_reseau_morpho}) que les paramètres cibles de l'entraînement visée (opération cible entre érosion, dilatation, ouverture, fermeture ou dessalage ; fonction(s) structurante(s) cible(s) ; ... | voir la section "cible" en haut de la fig. \ref{fig:architecture_reseau_morpho}). \\
+
+\vspace{-1.4mm}
+Pour toutes les expériences effectuées dans les travaux de Hermary et al., lorsqu'un entraînement est lancé, l'état des poids du noyau des différentes couches est aléatoire, défini par une loi normale d'espérance 0 et d'écart-type 1. Les poids de contrôle ($p$ pour les $p$Conv et les $\mathcal{L}$Morph, et $\alpha$ pour les $\mathcal{S}$Morph) sont, quant à eux, initialisés à $0$. Enfin, dans la couche de convolution en sortie des réseaux, la valeur $s$ de l'échelle (scale) est initialisée à $1$, et la valeur $b$ du biais (bias) à $0$. 
+De plus, la base de données d'images utilisée pour l'ensemble des entraînements de cette étude est MNIST, composée de $70000$ images digitales en niveaux de gris entre 0 et 1 \cite{LeCun_2005}.
+
+
+\newpage
+
+Dans cette étude sont également considérées 6 formes différentes de fonctions structurantes cibles sur un support de taille $7 \times 7$ : une croix plate de largeur $3$, une seconde croix plate de largeur $7$, un disque gradué de diamètre $5$, un second disque gradué de diamètre $7$, un losange gradué de diamètre $7$, et enfin un cercle complexe gradué de diamètre $7$ (voir fig. \ref{fig:architecture_reseau_morpho} partie cible, ou figures suivantes ligne supérieure). \\
+
+\vspace{-1.6mm}
+Les différentes expériences réalisées sont divisées en 4 grands groupes, formés selon l'opération cible : 
+
+\vspace{0.4mm}
+\begin{itemize}%[leftmargin=*]
+    \item[$\bullet$] 1er groupe : ensemble des expériences avec l'opération d'\textit{érosion} (1 couche morphologique dans les réseaux)
+    \item[$\bullet$] 2ème groupe : ensemble des expériences avec l'opération de \textit{dilatation} (1 couche morphologique dans les réseaux)
+    \item[$\bullet$] 3ème groupe : ensemble des expériences avec l'opération d'\textit{ouverture} (2 couches morphologiques dans les réseaux)
+    \item[$\bullet$] 2ème groupe :  ensemble des expériences avec l'opération de \textit{fermeture} (2 couches morphologiques dans les réseaux)
+\end{itemize}
+
+\vspace{2.0mm}
+Pour chaque expérience, afin de pouvoir comparer la précision des trois types de réseaux de manière rigoureuse, des métriques d'intérêt sont définies et évaluées sur chacune des expériences faites. Dans l'étude de Hermary et al. \cite{Hermary_2022}, chaque expérience est réalisée au moins cinq fois, pour pouvoir établir de manière suffisamment pertinente une moyenne et un écart-type sur les métriques évaluées. \\
+
+\vspace{-1.4mm}
+\noindent Les métriques choisies pour évaluer la précision des réseaux sont les suivantes : 
+
+\vspace{0.4mm}
+\begin{itemize}%[leftmargin=*]
+    \item[$\bullet$] la perte globale du réseau (dite \textit{loss}), qui est l'erreur moyenne sur la prédiction du réseau dans son état final, après convergence. Il s'agit ici de la moyenne des erreurs au carré (MSE) entre les images prédites, en sortie du réseau, et les images cibles, qui ont subi l'opération cible par la fonction structurante cible.
+    
+    \item[$\bullet$] l'erreur sur le noyau $w$ des couches (dite \textit{RMSE}), qui est la MSE entre le noyau $w$ de la couche en question et la fonction structurante cible $w_{\text{cible}}$, accompagnée de l'aspect visuel de chacun. On espère en effet que $w$ prenne la forme de $w_{\text{cible}}$ qui a été utilisée pour créer par opération les images cibles (voir "cible" fig. \ref{fig:architecture_reseau_morpho}).
+    
+    \item[$\bullet$] la valeur du paramètre de contrôle $|p|$ (ou $\alpha$) des couches morphologiques du réseau après convergence. Plus $p$ est éloigné de $0$, plus l'effet de la couche se rapproche d'une réelle érosion ou réelle dilatation (et non une pseudo-opération si $p$ est proche de $0$), et donc mieux le réseau aura convergé.
+    
+    \item[$\bullet$] le nombre d'époques nécessaires à la convergence du réseau (moyenne et écart-type sur l'ensemble des runs faites pour chaque expérience), représentant la vitesse de convergence du réseau pour atteindre à l'état final.
+\end{itemize}
+
+\vspace{2.0mm}
+\noindent Les résultats de comparaison de l'efficacité entre les trois différents réseaux, avec ces quatre métriques-ci, sont étudiés dans la sous-partie suivante.
